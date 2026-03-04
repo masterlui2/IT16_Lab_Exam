@@ -33,8 +33,14 @@ CREATE TABLE `students` (
   `fullname` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `course` varchar(100) DEFAULT NULL,
-  `course_description` varchar(255) DEFAULT NULL
+    `course_description` varchar(255) DEFAULT NULL
+  `course_description` varchar(255) DEFAULT NULL,
+  `phone` varchar(20) NOT NULL,
+  `guardian_name_enc` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  ALTER TABLE `students`
+  ADD COLUMN IF NOT EXISTS `phone` varchar(20) NOT NULL,
+  ADD COLUMN IF NOT EXISTS `guardian_name_enc` text NOT NULL;
 
 -- --------------------------------------------------------
 

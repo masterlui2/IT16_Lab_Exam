@@ -2,6 +2,8 @@
 session_start();
 include("db.php");
 
+$error_message = "";
+
 if(isset($_POST['add'])){
 
     $student_id = $_POST['student_id'];
@@ -10,6 +12,12 @@ if(isset($_POST['add'])){
     $course = $_POST['course'];
     $course_description = $_POST['course_description'];
     $phone = $_POST['phone'];
+    $phone = trim($_POST['phone']);
+
+    // Phone validation: numbers only, 10-15 digits
+    if(!preg_match('/^[0-9]+$/', $phone) || strlen($phone) < 10 || strlen($phone) > 15){
+        $error_message = "Invalid phone number. Please use numbers only (10 to 15 digits).";
+    }
 
     // Encryption settings
     $key = "my_secret_key_123"; 
@@ -24,10 +32,20 @@ if(isset($_POST['add'])){
               VALUES 
               ('$student_id', '$fullname', '$encrypted_email',
                '$course', '$course_description', '$phone')";
+    if($error_message === ""){
+        $query = "INSERT INTO students 
+                  (student_id, fullname, email, course, course_description, phone)
+                  VALUES 
+                  ('$student_id', '$fullname', '$encrypted_email',
+                   '$course', '$course_description', '$phone')";
 
     mysqli_query($conn, $query);
+        mysqli_query($conn, $query);
 
     header("Location: dashboard.php");
+        header("Location: dashboard.php");
+        exit();
+    }
 }
 ?>
 
@@ -39,6 +57,10 @@ if(isset($_POST['add'])){
 <body>
 
 <h2>Add Student</h2>
+
+<?php if($error_message !== ""){ ?>
+<p style="color: red;"><?php echo $error_message; ?></p>
+<?php } ?>
 
 <form method="POST">
     Student ID: <input type="text" name="student_id"><br>
